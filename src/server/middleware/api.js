@@ -30,7 +30,9 @@ const apiMiddleware = (req, resp, next) => {
               });
             }
           });
-
+          
+          resp.setHeader('Access-Control-Allow-Origin', '*');
+          resp.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
           resp.end(JSON.stringify(results));
         }
       })
