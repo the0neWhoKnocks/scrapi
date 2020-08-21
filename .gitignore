@@ -3,4 +3,5 @@
 node_modules
 
 # files
+.dockercreds
 .DS_STORE
