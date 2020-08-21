@@ -1,0 +1,11 @@
+version: "3.4"
+
+services:
+  "scrapi":
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: scrapi
+    image: theonewhoknocks/scrapi
+    ports:
+      - "3000:3000"
