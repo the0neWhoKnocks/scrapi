@@ -16,6 +16,6 @@ polka()
   .listen(PORT, err => {
     if (err) console.log('error', err);
     else {
-      console.log(`Server running at: http://localhost:${port}/heartbeat`);
+      console.log(`Server running at: http://localhost:${port}`);
     }
   });
