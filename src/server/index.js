@@ -10,12 +10,29 @@ const middleware = [
   heartbeatMiddleware,
   apiMiddleware,
 ];
+const { handler: requestHandler } = polka().use(...middleware);
 
-polka()
-  .use(...middleware)
-  .listen(PORT, err => {
-    if (err) console.log('error', err);
-    else {
-      console.log(`Server running at: http://localhost:${port}`);
-    }
-  });
+let httpModule;
+let protocol = 'http';
+let server;
+
+if (process.env.NODE_EXTRA_CA_CERTS) {
+  const { readFileSync } = require('fs');
+  const cert = readFileSync(process.env.NODE_EXTRA_CA_CERTS, 'utf8');
+  const key = readFileSync(process.env.NODE_EXTRA_CA_CERTS.replace('.crt', '.key'), 'utf8');
+  
+  httpModule = require('https');
+  protocol = 'https';
+  server = httpModule.createServer({ cert, key }, requestHandler);
+}
+else {
+  httpModule = require('http');
+  server = httpModule.createServer(requestHandler);
+}
+
+server.listen(PORT, err => {
+  if (err) console.log('error', err);
+  else {
+    console.log(`Server running at: ${protocol}://localhost:${port}`);
+  }
+});

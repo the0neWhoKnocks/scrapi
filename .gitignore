@@ -1,5 +1,6 @@
 # folders
 .git
+certs.*
 node_modules
 
 # files
