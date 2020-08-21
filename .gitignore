@@ -1,0 +1,6 @@
+# folders
+.git
+node_modules
+
+# files
+.DS_STORE
