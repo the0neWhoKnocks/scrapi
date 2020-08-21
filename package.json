@@ -7,8 +7,8 @@
   },
   "scripts": {
     "preinstall": "node ./bin/pre-install.js",
-    "start": "node ./src/server",
-    "start:dev": "NODE_ENV=dev node ./watcher.js"
+    "start": "NODE_EXTRA_CA_CERTS=\"$PWD/certs.localhost/localhost.crt\" node ./src/server",
+    "start:dev": "NODE_EXTRA_CA_CERTS=\"$PWD/certs.localhost/localhost.crt\" NODE_ENV=dev node ./watcher.js"
   },
   "dependencies": {
     "axios": "^0.20.0",

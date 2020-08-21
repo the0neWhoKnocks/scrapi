@@ -6,6 +6,10 @@ services:
       context: ./
       dockerfile: Dockerfile
     container_name: scrapi
+    environment:
+      NODE_EXTRA_CA_CERTS: /home/node/app/certs/localhost.crt
     image: theonewhoknocks/scrapi
     ports:
       - "3000:3000"
+    volumes:
+      - "${PWD}/certs.localhost:/home/node/app/certs"
