@@ -1,0 +1,22 @@
+{
+  "name": "scrapi",
+  "description": "A simple API to scrape specific HTML data",
+  "version": "0.0.1",
+  "engines": {
+    "node": "10.x"
+  },
+  "scripts": {
+    "start": "node ./src/server",
+    "start:dev": "NODE_ENV=dev node ./watcher.js"
+  },
+  "dependencies": {
+    "axios": "^0.20.0",
+    "cheerio": "^1.0.0-rc.3",
+    "compression": "^1.7.1",
+    "polka": "next"
+  },
+  "devDependencies": {
+    "eslint": "^7.5.0",
+    "nodemon": "^2.0.4"
+  }
+}
