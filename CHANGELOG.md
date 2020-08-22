@@ -1,6 +1,13 @@
 # Changelog
 ---
 
+## v1.3.0
+
+**Features**
+- [7beef50](https://github.com/the0neWhoKnocks/scrapi/commit/7beef50) - Treat failure like success
+
+---
+
 ## v1.2.0
 
 **Features**
