@@ -6,40 +6,42 @@ const apiMiddleware = (req, resp, next) => {
     const { selectors, url } = req.query;
     
     console.log(`[LOAD] "${url}"`);
+    
+    resp.setHeader('Access-Control-Allow-Origin', '*');
+    resp.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    
+    const parseResponse = (payload) => {
+      if (payload.status === undefined) payload = payload.response;
+      
+      const results = [];
+      const html = payload.data;
+      const $ = cheerio.load(html);
+      const _selectors = selectors.split('|');
+      
+      // console.log($.root().html());
 
-    axios.get(url)
-      .then((page) => {
-        if (page.status === 200) {
-          const html = page.data;
-          const $ = cheerio.load(html);
-          const results = [];
-          const _selectors = selectors.split('|');
-          
-          // console.log($.root().html());
+      _selectors.forEach(selector => {
+        console.log(`  [FIND] Selector: "${selector}"`);
 
-          _selectors.forEach(selector => {
-            console.log(`  [FIND] Selector: "${selector}"`);
-  
-            const nodeData = $(selector);
-  
-            if (nodeData && nodeData[0]) {
-              results.push({
-                attr: nodeData[0].attribs,
-                html: nodeData.html(),
-                text: nodeData.text(),
-              });
-            }
+        const nodeData = $(selector);
+
+        if (nodeData && nodeData[0]) {
+          results.push({
+            attr: nodeData[0].attribs,
+            html: nodeData.html(),
+            text: nodeData.text(),
           });
-          
-          resp.setHeader('Access-Control-Allow-Origin', '*');
-          resp.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-          resp.end(JSON.stringify(results));
         }
-      })
-      .catch((err) => {
-        console.log(err);
-        resp.end(JSON.stringify({ error: err.stack }));
       });
+      
+      resp.end(JSON.stringify({
+        results,
+        status: payload.status,
+        statusText: payload.statusText,
+      }));
+    };
+    
+    axios.get(url).then(parseResponse).catch(parseResponse);
   }
   else next();
 };
