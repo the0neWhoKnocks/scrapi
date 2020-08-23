@@ -1,12 +1,14 @@
 const compression = require('compression');
 const polka = require('polka');
 const { PORT } = require('../constants');
-const heartbeatMiddleware = require('./middleware/heartbeat');
 const apiMiddleware = require('./middleware/api');
+const heartbeatMiddleware = require('./middleware/heartbeat');
+const inspectMiddleware = require('./middleware/inspect');
 
 const port = process.env.PORT || PORT;
 const middleware = [
   compression({ threshold: 0 }),
+  inspectMiddleware(),
   heartbeatMiddleware,
   apiMiddleware,
 ];
