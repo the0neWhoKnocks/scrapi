@@ -66,13 +66,20 @@ npm run start:dev
 
 ## Request Data
 
+**Accepted Params**
+| Param | Optional | Description |
+| ----- | -------- | ----------- |
+| `selectors` | `false` | A pipe `|` delimited list of CSS selectors. |
+| `ua` | `true` | Whether or not to pass the request's User-Agent along. |
+| `url` | `false` | The URL to the page you want to scrape. |
+
 ```js
 // The URL of the page you want to scrape data from
 var url = encodeURIComponent('https://google.com/');
 // A list of CSS selectors separated by a pipe `|` character
-var selectors = encodeURIComponent('meta[itemprop="image"]|img[alt="Google"]|form[action="/search"]|.bad-selector');
+var selectors = encodeURIComponent('meta[itemprop="image"]|img[alt="Google"]|form[action="/search"]|.bad-selector&ua=true');
 
-fetch(`http://localhost:3000/api?url=${url}&selectors=${selectors}`)
+fetch(`https://localhost:3000/api?url=${url}&selectors=${selectors}`)
   .then(resp => resp.json())
   .then((resp) => {
     console.log(resp);
