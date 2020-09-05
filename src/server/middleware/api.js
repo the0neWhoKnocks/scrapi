@@ -3,7 +3,8 @@ const cheerio = require('cheerio');
 
 const apiMiddleware = (req, resp, next) => {
   if (req.url.startsWith('/api')) {
-    const { selectors, url } = req.query;
+    const { selectors, ua, url } = req.query;
+    const userAgent = ua && req.headers && req.headers['user-agent'];
     
     console.log(`[LOAD] "${url}"`);
     
@@ -41,7 +42,22 @@ const apiMiddleware = (req, resp, next) => {
       }));
     };
     
-    axios.get(url).then(parseResponse).catch(parseResponse);
+    const opts = {};
+    
+    if (userAgent) {
+      if (!opts.headers) opts.headers = {};
+      opts.headers['User-Agent'] = userAgent;
+    }
+    
+    if (Object.keys(opts).length) {
+      const formattedOpts = JSON.stringify(opts, null, 2)
+        .split('\n')
+        .map(line => `  ${line}`)
+        .join('\n');
+      console.log(`  [REQ_OPTS]\n${formattedOpts}`);
+    }
+    
+    axios.get(url, opts).then(parseResponse).catch(parseResponse);
   }
   else next();
 };
