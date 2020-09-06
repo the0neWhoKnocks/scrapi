@@ -1,15 +1,51 @@
 version: "3.4"
 
 services:
-  "scrapi":
+  scrapi:
     build:
       context: ./
       dockerfile: Dockerfile
     container_name: scrapi
+    depends_on:
+      - scrapi-vpn
     environment:
       NODE_EXTRA_CA_CERTS: /home/node/app/certs/localhost.crt
+      VPN_ENABLED: 'true'
     image: theonewhoknocks/scrapi
-    ports:
-      - "3000:3000"
+    network_mode: container:scrapi-vpn
+    # NOTE - If you're using a VPN, it has to expose the ports in it's Service.
+    # If you're not using a VPN, uncomment the below `ports` section.
+    # ports:
+    #   - "3000:3000"
     volumes:
       - "${PWD}/certs.localhost:/home/node/app/certs"
+  
+  scrapi-vpn:
+    cap_add:
+      - NET_ADMIN
+    container_name: scrapi-vpn
+    devices:
+      - /dev/net/tun
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+    environment:
+      TZ: America/Los_Angeles
+    image: dperson/openvpn-client
+    networks:
+      - default
+    ports:
+      - "3000:3000"
+    read_only: true
+    security_opt:
+      - label:disable
+    stdin_open: true
+    tmpfs:
+      - /run
+      - /tmp
+    tty: true
+    volumes:
+      - ./config:/vpn
+
+networks:
+  default:
