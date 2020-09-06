@@ -1,6 +1,18 @@
 # Changelog
 ---
 
+## v1.4.0
+
+**Features**
+- [222fa4b](https://github.com/the0neWhoKnocks/scrapi/commit/222fa4b) - Added VPN support
+- [8b44208](https://github.com/the0neWhoKnocks/scrapi/commit/8b44208) - User-Agent
+- [d6fb58e](https://github.com/the0neWhoKnocks/scrapi/commit/d6fb58e) - Added inspect middleware
+
+**Uncategorized**
+- [d6870b9](https://github.com/the0neWhoKnocks/scrapi/commit/d6870b9) ops: Release not created in GH when double quotes in commit message
+
+---
+
 ## v1.3.0
 
 **Features**
