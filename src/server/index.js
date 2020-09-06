@@ -32,9 +32,54 @@ else {
   server = httpModule.createServer(requestHandler);
 }
 
-server.listen(PORT, err => {
-  if (err) console.log('error', err);
-  else {
-    console.log(`Server running at: ${protocol}://localhost:${port}`);
-  }
-});
+function startServer() {
+  server.listen(PORT, err => {
+    if (err) console.log('error', err);
+    else {
+      console.log(`Server running at: ${protocol}://localhost:${port}`);
+      
+      if (process.env.VPN_ENABLED) {
+        const axios = require('axios');
+        axios.get('https://api.ipify.org/', { timeout: 3000 })
+          .then(resp => {
+            console.log(`Public IP: "${resp.data}"`);
+          })
+          .catch(err => {
+            console.log(err);
+            process.exit(1);
+          });
+      }
+    }
+  });
+}
+
+if (process.env.VPN_ENABLED) {
+  const { networkInterfaces } = require('os');
+  const maxSeconds = 60;
+  let count = 1;
+  
+  console.log('[WAIT] For VPN to connect');
+  
+  const waitForConnection = setInterval(() => {
+    const nets = networkInterfaces();
+    
+    for (const name of Object.keys(nets)) {
+      for (const net of nets[name]) {
+        if (net.family === 'IPv4' && !net.internal) {
+          if (name.startsWith('tun')) {
+            clearInterval(waitForConnection);
+            startServer();
+          }
+        }
+      }
+    }
+    
+    if (count === maxSeconds) {
+      clearInterval(waitForConnection);
+      console.log(`[ERROR] It's been ${maxSeconds} seconds, and the VPN hasn't connected. Giving up.`);
+      process.exit(1);
+    }
+    count += 1;
+  }, 1000);
+}
+else startServer();

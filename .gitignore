@@ -1,6 +1,7 @@
 # folders
 .git
 certs.*
+config
 node_modules
 
 # files

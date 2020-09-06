@@ -60,7 +60,12 @@ npm run start
 
 # Development Server
 npm run start:dev
+
+# Via Docker
+docker-compose up --abort-on-container-exit
 ```
+
+For more info on how the `config` for the VPN is set up, visit: https://github.com/the0neWhoKnocks/docker-vpn
 
 ---
 
