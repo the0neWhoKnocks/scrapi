@@ -1,6 +1,17 @@
 # Changelog
 ---
 
+## v1.5.0
+
+**Bugfixes**
+- [3adc59c](https://github.com/the0neWhoKnocks/scrapi/commit/3adc59c):  Multiple results and errors
+
+**Dev-Ops**
+- [238da5d](https://github.com/the0neWhoKnocks/scrapi/commit/238da5d):  Container wouldn't build
+- [c8e47eb](https://github.com/the0neWhoKnocks/scrapi/commit/c8e47eb):  Brought in new release script
+
+---
+
 ## v1.4.0
 
 **Features**
