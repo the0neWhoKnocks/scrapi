@@ -12,7 +12,7 @@ services:
       NODE_EXTRA_CA_CERTS: /home/node/app/certs/localhost.crt
       VPN_ENABLED: 'true'
     image: theonewhoknocks/scrapi
-    network_mode: container:scrapi-vpn
+    network_mode: service:scrapi-vpn
     # NOTE - If you're using a VPN, it has to expose the ports in it's Service.
     # If you're not using a VPN, uncomment the below `ports` section.
     # ports:
