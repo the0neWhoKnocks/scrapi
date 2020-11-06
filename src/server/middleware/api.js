@@ -12,7 +12,13 @@ const apiMiddleware = (req, resp, next) => {
     resp.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
     
     const parseResponse = (payload) => {
-      if (!payload && !payload.response) resp.end(JSON.stringify({ error: payload.stack }));
+      if (
+        (!payload && !payload.response)
+        || payload instanceof Error
+      ) {
+        const status = payload.status || payload.response.status;
+        resp.error(payload.stack, status);
+      }
       else {
         if (payload.status === undefined) payload = payload.response;
         
@@ -28,20 +34,18 @@ const apiMiddleware = (req, resp, next) => {
 
           const nodeData = $(selector);
 
-          if (nodeData && nodeData[0]) {
-            results.push({
-              attr: nodeData[0].attribs,
-              html: nodeData.html(),
-              text: nodeData.text(),
+          if (nodeData && nodeData.length) {
+            nodeData.each((ndx, node) => {
+              results.push({
+                attr: node.attribs,
+                html: $(node).html(),
+                text: $(node).text(),
+              });
             });
           }
         });
         
-        resp.end(JSON.stringify({
-          results,
-          status: payload.status,
-          statusText: payload.statusText,
-        }));
+        resp.json({ results });
       }
     };
     

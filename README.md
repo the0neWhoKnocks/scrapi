@@ -82,9 +82,9 @@ For more info on how the `config` for the VPN is set up, visit: https://github.c
 // The URL of the page you want to scrape data from
 var url = encodeURIComponent('https://google.com/');
 // A list of CSS selectors separated by a pipe `|` character
-var selectors = encodeURIComponent('meta[itemprop="image"]|img[alt="Google"]|form[action="/search"]|.bad-selector&ua=true');
+var selectors = encodeURIComponent('meta[itemprop="image"]|img[alt="Google"]|form[action="/search"]|.bad-selector');
 
-fetch(`https://localhost:3000/api?url=${url}&selectors=${selectors}`)
+fetch(`https://localhost:3000/api?url=${url}&selectors=${selectors}&ua=true`)
   .then(resp => resp.json())
   .then((resp) => {
     console.log(resp);
