@@ -9,6 +9,20 @@ const port = process.env.PORT || PORT;
 const middleware = [
   compression({ threshold: 0 }),
   inspectMiddleware(),
+  (req, res, next) => {
+    res.error = function error(msg, status = 500) {
+      res.status(status).json({ error: msg });
+    }
+    res.json = function json(data = {}) {
+      res.setHeader('Content-Type', 'application/json');
+      res.end(JSON.stringify(data));
+    }
+    res.status = function status(code = 200) {
+      res.statusCode = code;
+      return res;
+    }
+    next();
+  },
   heartbeatMiddleware,
   apiMiddleware,
 ];
