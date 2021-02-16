@@ -3,8 +3,9 @@ const cheerio = require('cheerio');
 
 const apiMiddleware = (req, resp, next) => {
   if (req.url.startsWith('/api')) {
-    const { selectors, ua, url } = req.query;
+    const { headers, selectors, ua, url } = req.query;
     const userAgent = ua && req.headers && req.headers['user-agent'];
+    const additionalHeaders = headers && JSON.parse(decodeURIComponent(headers)) || undefined;
     
     console.log(`[LOAD] "${url}"`);
     
@@ -25,7 +26,7 @@ const apiMiddleware = (req, resp, next) => {
         const results = [];
         const html = payload.data;
         const $ = cheerio.load(html);
-        const _selectors = selectors.split('|');
+        const _selectors = decodeURIComponent(selectors).split('|');
         
         // console.log($.root().html());
 
@@ -51,9 +52,14 @@ const apiMiddleware = (req, resp, next) => {
     
     const opts = {};
     
-    if (userAgent) {
-      if (!opts.headers) opts.headers = {};
-      opts.headers['User-Agent'] = userAgent;
+    if (userAgent || additionalHeaders) opts.headers = {};
+    
+    if (userAgent) opts.headers['User-Agent'] = userAgent;
+    
+    if (additionalHeaders) {
+      Object.keys(additionalHeaders).forEach((header) => {
+        opts.headers[header] = additionalHeaders[header];
+      });
     }
     
     if (Object.keys(opts).length) {
