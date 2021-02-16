@@ -74,17 +74,27 @@ For more info on how the `config` for the VPN is set up, visit: https://github.c
 **Accepted Params**
 | Param | Optional | Description |
 | ----- | -------- | ----------- |
+| `headers` | `true` | Any extra headers you may need to send along to the `url` |
 | `selectors` | `false` | A pipe `|` delimited list of CSS selectors. |
 | `ua` | `true` | Whether or not to pass the request's User-Agent along. |
 | `url` | `false` | The URL to the page you want to scrape. |
 
 ```js
-// The URL of the page you want to scrape data from
-var url = encodeURIComponent('https://google.com/');
-// A list of CSS selectors separated by a pipe `|` character
-var selectors = encodeURIComponent('meta[itemprop="image"]|img[alt="Google"]|form[action="/search"]|.bad-selector');
+const url = new URL('https://localhost:3000/api');
+url.search = new URLSearchParams({
+  // Any extra headers that may be required for the page
+	headers: encodeURIComponent(JSON.stringify({
+    Host: 'site.com',
+    Referer: 'https://site.com/page/',
+	})),
+  // A list of CSS selectors separated by a pipe `|` character
+	selectors: encodeURIComponent('meta[itemprop="image"]|img[alt="Google"]|form[action="/search"]|.bad-selector'),
+	ua: true,
+  // The URL of the page you want to scrape data from
+	url: 'https://google.com/',
+}).toString();
 
-fetch(`https://localhost:3000/api?url=${url}&selectors=${selectors}&ua=true`)
+fetch(url)
   .then(resp => resp.json())
   .then((resp) => {
     console.log(resp);
