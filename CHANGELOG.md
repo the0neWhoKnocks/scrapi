@@ -1,6 +1,16 @@
 # Changelog
 ---
 
+## v1.6.0
+
+**Dev-Ops**
+- [b2368dc](https://github.com/the0neWhoKnocks/scrapi/commit/b2368dc):  Updated release script
+
+**Features**
+- [bb1c941](https://github.com/the0neWhoKnocks/scrapi/commit/bb1c941):  Ability to add custom headers
+
+---
+
 ## v1.5.0
 
 **Bugfixes**

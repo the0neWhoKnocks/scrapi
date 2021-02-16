@@ -1,7 +1,7 @@
 {
   "name": "scrapi",
   "description": "A simple API to scrape specific HTML data",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "engines": {
     "node": "10.x"
   },
